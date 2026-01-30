@@ -34,66 +34,43 @@ function verificarStatus() {
     }
 }
 
-// --- FUNÇÕES DO CHAT COM IA ---
 function toggleChat() {
-    const chat = document.getElementById('chat-container');
-    chat.classList.toggle('hidden');
+  document.getElementById("chat-container").classList.toggle("hidden");
 }
 
 async function perguntarIA() {
-    const input = document.getElementById('pergunta-ia');
-    const msgArea = document.getElementById('chat-mensagens');
-    const pergunta = input.value;
-    
-    if (!pergunta) return;
+  const input = document.getElementById("pergunta-ia");
+  const area = document.getElementById("chat-mensagens");
+  const pergunta = input.value.trim();
 
-    msgArea.innerHTML += `<p class="msg-user"><b>Você:</b> ${pergunta}</p>`;
-    input.value = '';
-    msgArea.scrollTop = msgArea.scrollHeight;
+  if (!pergunta) return;
 
-    // Use sua chave de 39 caracteres aqui
-    const API_KEY = "AIzaSyATUUC_9BUkztjGqENapdb5OM5A4eGaZO4"; 
-    
-    // Testando com o modelo Flash Latest na v1beta (o mais compatível)
-    // Verifique se a sua URL está exatamente assim (usando v1 e o modelo flash)
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+  area.innerHTML += `<div class="msg-user">${pergunta}</div>`;
+  input.value = "";
+  area.scrollTop = area.scrollHeight;
 
-    const dadosParaEnviar = {
-        contents: [{
-            parts: [{
-                text: `Você é o Garçom do Bar Fernandes. Menu: Torresmo c/ Mandioca (R$5), Rabada c/ Tilápia (R$37,90), Costelinha de Caranha (R$4,50), Salsichas, Quibe. Seja engraçado, use gírias de bar e mencione que o site foi feito pelo Benjamim, de 10 anos. O cliente perguntou: ${pergunta}`
-            }]
-        }]
-    };
+  const loading = document.createElement("div");
+  loading.className = "msg-ia";
+  loading.innerText = "Pensando aqui no balcão... 🍺";
+  area.appendChild(loading);
 
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosParaEnviar)
-        });
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pergunta })
+    });
 
-        const data = await response.json();
+    const data = await res.json();
+    loading.remove();
 
-        if (data.error) {
-            console.error("Erro detalhado:", data.error);
-            msgArea.innerHTML += `<p class="msg-ia"><b>Garçom:</b> O Google disse: ${data.error.message}</p>`;
-            return;
-        }
+    area.innerHTML += `<div class="msg-ia">${data.resposta}</div>`;
+    area.scrollTop = area.scrollHeight;
 
-        if (data.candidates && data.candidates[0].content) {
-            const respostaIA = data.candidates[0].content.parts[0].text;
-            msgArea.innerHTML += `<p class="msg-ia"><b>Garçom:</b> ${respostaIA}</p>`;
-        } else {
-            msgArea.innerHTML += `<p class="msg-ia"><b>Garçom:</b> Fiquei sem palavras! Tenta perguntar de outro jeito?</p>`;
-        }
-        
-        msgArea.scrollTop = msgArea.scrollHeight;
-
-    } catch (e) {
-        msgArea.innerHTML += `<p class="msg-ia"><b>Garçom:</b> Deu um curto-circuito aqui! Tenta de novo?</p>`;
-    }
-
+  } catch {
+    loading.innerText = "Deu ruim aqui 😅 tenta de novo!";
+  }
 }
 
 console.log("OI")
+
