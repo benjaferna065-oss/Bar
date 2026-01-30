@@ -93,4 +93,7 @@ async function perguntarIA() {
     } catch (e) {
         msgArea.innerHTML += `<p class="msg-ia"><b>Garçom:</b> Deu um curto-circuito aqui! Tenta de novo?</p>`;
     }
+
 }
+
+console.log("OI")
