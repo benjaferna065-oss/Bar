@@ -58,22 +58,24 @@
         <button type="submit" class="btn-enviar">Enviar Avaliação</button>
     </form>
 </section>
-<div id="btn-chat" onclick="toggleChat()">
-    <span>🤖</span>
-</div>
+<!-- BOTÃO DO CHAT -->
+<div id="btn-chat" onclick="toggleChat()">🤖</div>
 
+<!-- CHAT -->
 <div id="chat-container" class="hidden">
-    <div id="chat-header">
-        <strong>Garçom IA - Bar Fernandes</strong>
-        <button onclick="toggleChat()">X</button>
-    </div>
-    <div id="chat-mensagens">
-        <p class="msg-ia">Olá! Sou o garçom digital. Dúvida no pedido? Me pergunta aí!</p>
-    </div>
-    <div id="chat-input-area">
-        <input type="text" id="pergunta-ia" placeholder="Ex: O que combina com cerveja?">
-        <button onclick="perguntarIA()">➤</button>
-    </div>
+  <div id="chat-header">
+    <strong>Garçom IA</strong>
+    <button onclick="toggleChat()">X</button>
+  </div>
+
+  <div id="chat-mensagens">
+    <p class="msg-ia">Fala meu patrão 🍺 o que vai ser hoje?</p>
+  </div>
+
+  <div id="chat-input">
+    <input id="pergunta-ia" placeholder="Ex: O que combina com cerveja?">
+    <button onclick="perguntarIA()">➤</button>
+  </div>
 </div>
     </main>
     <footer>
@@ -84,4 +86,5 @@
     </footer>
     <script src="script.js"></script>
 </body>
+
 </html>
