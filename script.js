@@ -70,3 +70,5 @@ window.onload = () => {
   verificarStatus();
   setInterval(verificarStatus, 60000);
 };
+
+console.log("OI")
